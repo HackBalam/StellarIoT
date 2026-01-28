@@ -25,8 +25,8 @@ void setup() {
     Serial.println("\n\nConnecting to WiFi...");
 
     // REEMPLAZA CON TUS CREDENCIALES
-    const char* ssid = "XXXXXXXX";
-    const char* password = "XXXXXXXXXX";
+    const char* ssid = "Wokwi-GUEST";
+    const char* password = "";
 
     WiFi.begin(ssid, password);
 

@@ -18,6 +18,35 @@ A lightweight Stellar blockchain SDK for ESP32 IoT devices. Send payments, manag
 - USB cable
 - WiFi connection
 
+## No ESP32? Use Wokwi Simulator
+
+If you don't have a physical ESP32, you can run the project using [Wokwi](https://wokwi.com/), a free online ESP32 simulator.
+
+### Setup Wokwi
+
+1. **Create a Wokwi account** at [wokwi.com](https://wokwi.com/)
+
+2. **Install the Wokwi extension** in Visual Studio Code:
+   - Open VS Code
+   - Go to Extensions (Ctrl+Shift+X)
+   - Search for "Wokwi Simulator"
+   - Click Install
+
+3. **Activate the free license**:
+   - Press `F1` and type "Wokwi: Request a new License"
+   - Follow the instructions to get your free license
+
+4. **Configure WiFi for Wokwi** - Keep the default settings in `src/main.cpp`:
+   ```cpp
+   const char* ssid = "Wokwi-GUEST";
+   const char* password = "";
+   ```
+
+5. **Run the simulation**:
+   - Open the `diagram.json` file in VS Code
+   - Press the Play button or use `F1` > "Wokwi: Start Simulator"
+   - The Serial Monitor will appear automatically
+
 ## Installation
 
 ### 1. Install PlatformIO
