@@ -12,97 +12,145 @@ A lightweight Stellar blockchain SDK for ESP32 IoT devices. Send payments, manag
 - **Account Management** - Check balance, fund accounts, view history
 - **XDR Serialization** - Build and sign Stellar transactions
 
-## Hardware Requirements
+## Getting Started
 
-- ESP32 DevKit (any variant)
-- USB cable
-- WiFi connection
+Choose your setup method:
 
-## No ESP32? Use Wokwi Simulator
+| Option | Requirements | Best for |
+|--------|--------------|----------|
+| **Option A: Simulator** | Just a computer | Testing, learning, no hardware |
+| **Option B: Physical ESP32** | ESP32 + USB cable | Real IoT deployment |
 
-If you don't have a physical ESP32, you can run the project using [Wokwi](https://wokwi.com/), a free online ESP32 simulator.
+---
 
-### Setup Wokwi
+## Step 1: Install PlatformIO (Required for both options)
 
-1. **Create a Wokwi account** at [wokwi.com](https://wokwi.com/)
+### Install via VS Code (Recommended)
+1. Open VS Code
+2. Go to Extensions (`Ctrl+Shift+X`)
+3. Search for "PlatformIO IDE"
+4. Click Install
 
-2. **Install the Wokwi extension** in Visual Studio Code:
-   - Open VS Code
-   - Go to Extensions (Ctrl+Shift+X)
-   - Search for "Wokwi Simulator"
-   - Click Install
-
-3. **Activate the free license**:
-   - Press `F1` and type "Wokwi: Request a new License"
-   - Follow the instructions to get your free license
-
-4. **Configure WiFi for Wokwi** - Keep the default settings in `src/main.cpp`:
-   ```cpp
-   const char* ssid = "Wokwi-GUEST";
-   const char* password = "";
-   ```
-
-5. **Run the simulation**:
-   - Open the `diagram.json` file in VS Code
-   - Press the Play button or use `F1` > "Wokwi: Start Simulator"
-   - The Serial Monitor will appear automatically
-   - You no longer need to perform the following steps, just install PlatformIO and use pio run command. 
-
-## Installation
-
-### 1. Install PlatformIO
-
+### Or install via command line
 ```bash
-# Install PlatformIO CLI
 pip install platformio
 ```
 
-Or use PlatformIO IDE extension for VS Code.
+### Troubleshooting: `pio` command not recognized
 
-### 2. Clone Repository
+If after installing you get `'pio' is not recognized`, try one of these solutions:
+
+**Solution 1:** Use Python module directly:
+```bash
+python -m platformio run
+```
+
+**Solution 2:** Add to PATH manually:
+
+Windows (PowerShell as Admin):
+```powershell
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";$env:USERPROFILE\.platformio\penv\Scripts", "User")
+```
+
+Linux/Mac:
+```bash
+export PATH="$HOME/.platformio/penv/bin:$PATH"
+```
+
+Then restart your terminal.
+
+---
+
+## Step 2: Clone the Repository
 
 ```bash
 git clone https://github.com/your-repo/stellar-iot-sdk.git
 cd stellar-iot-sdk
 ```
 
-### 3. Configure WiFi
+---
 
-Edit `src/main.cpp` and set your WiFi credentials:
+## Option A: Wokwi Simulator (No ESP32 needed)
 
+Use this option if you don't have a physical ESP32.
+
+### A1. Install Wokwi Extension
+1. Open VS Code
+2. Go to Extensions (`Ctrl+Shift+X`)
+3. Search for "Wokwi Simulator"
+4. Click Install
+
+### A2. Get Wokwi License (Free)
+1. Create an account at [wokwi.com](https://wokwi.com/)
+2. In VS Code, press `F1`
+3. Type "Wokwi: Request a new License"
+4. Follow the instructions
+
+### A3. Configure WiFi for Simulator
+Make sure `src/main.cpp` has these settings (default):
 ```cpp
-// Line ~35 in setup()
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
+```
+
+### A4. Build and Run
+```bash
+pio run
+```
+
+Then in VS Code:
+1. Open `diagram.json`
+2. Press the Play button (or `F1` > "Wokwi: Start Simulator")
+3. The Serial Monitor will appear automatically
+
+**Done! Skip to the [Commands](#commands) section.**
+
+---
+
+## Option B: Physical ESP32
+
+Use this option if you have an ESP32 development board.
+
+### B1. Hardware Required
+- ESP32 DevKit (any variant)
+- USB cable
+- WiFi network (2.4GHz)
+
+### B2. Configure WiFi
+Edit `src/main.cpp` and set your WiFi credentials:
+```cpp
 const char* ssid = "YOUR_WIFI_SSID";
 const char* password = "YOUR_WIFI_PASSWORD";
 ```
 
-### 4. Configure Serial Port
-
+### B3. Configure Serial Port
 Edit `platformio.ini` and set your COM port:
-
 ```ini
-# For Windows (check Device Manager)
+# Windows (check Device Manager)
 upload_port = COM3
 monitor_port = COM3
 
-# For Linux
+# Linux
 upload_port = /dev/ttyUSB0
 monitor_port = /dev/ttyUSB0
 
-# For Mac
+# Mac
 upload_port = /dev/cu.usbserial-0001
 monitor_port = /dev/cu.usbserial-0001
 ```
 
-### 5. Upload Firmware
-
+### B4. Upload Firmware
 ```bash
-# Hold FLASH button, press RST, release both
+# If upload fails, hold FLASH button while pressing RST
 pio run -t upload
 
 # Open serial monitor
 pio device monitor
 ```
+
+**Done! Continue to the [Commands](#commands) section.**
+
+---
 
 ## Commands
 
