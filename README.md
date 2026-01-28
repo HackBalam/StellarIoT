@@ -46,6 +46,7 @@ If you don't have a physical ESP32, you can run the project using [Wokwi](https:
    - Open the `diagram.json` file in VS Code
    - Press the Play button or use `F1` > "Wokwi: Start Simulator"
    - The Serial Monitor will appear automatically
+   - You no longer need to perform the following steps, just install PlatformIO and use pio run command. 
 
 ## Installation
 
