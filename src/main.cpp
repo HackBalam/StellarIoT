@@ -9,11 +9,14 @@
 #include "stellar_xdr.h"
 #include "stellar_account.h"
 #include "stellar_payment.h"
+#include "stellar_webserver.h"
 // Variable global para el keypair actual
 StellarKeypair* currentKeypair = nullptr;
 StellarNetwork* currentNetwork = nullptr;
 StellarAccount* currentAccount = nullptr;
 StellarPayment* currentPayment = nullptr;
+
+StellarWebServer* webServer = nullptr;
 
 void setup() {
     Serial.begin(115200);
@@ -41,6 +44,12 @@ void setup() {
         Serial.println("\n✓ WiFi connected!");
         Serial.print("IP: ");
         Serial.println(WiFi.localIP());
+
+        // Start HTTP dashboard
+        webServer = new StellarWebServer(
+            &currentKeypair, &currentNetwork, &currentAccount, &currentPayment
+        );
+        webServer->begin();
     } else {
         Serial.println("\n✗ WiFi connection failed");
         Serial.println("Network commands will not work");
@@ -119,6 +128,9 @@ void cleanupManagers() {
 }
 
 void loop() {
+    // Handle incoming HTTP requests
+    if (webServer) webServer->handle();
+
     if (Serial.available()) {
         String command = Serial.readStringUntil('\n');
         command.trim();

@@ -11,6 +11,7 @@ A lightweight Stellar blockchain SDK for ESP32 IoT devices. Send payments, manag
 - **Payment Operations** - Send XLM payments with memo support
 - **Account Management** - Check balance, fund accounts, view history
 - **XDR Serialization** - Build and sign Stellar transactions
+- **Web Dashboard** - Responsive HTTP interface to control the ESP32 from any browser
 
 ## Getting Started
 
@@ -105,6 +106,25 @@ Then in VS Code:
 
 **Done! Skip to the [Commands](#commands) section.**
 
+### Web Dashboard on Wokwi
+
+> ⚠️ **Paid feature required**
+>
+> The web dashboard runs an HTTP server on port 80 inside the simulator. Accessing it from your browser requires **inbound connections** to the simulated ESP32, which is only supported by the **Wokwi IoT Private Gateway** — available to **paid Wokwi users only**.
+>
+> The free Public Gateway supports outbound connections only (e.g. calls to Horizon API), so the dashboard will not be reachable via `http://localhost:9080` without a paid account.
+
+If you have a paid Wokwi account:
+
+1. Download and run the [Wokwi IoT Gateway](https://github.com/wokwi/wokwi-gateway/releases) — you should see:
+   ```
+   Listening on TCP Port 9011
+   Port forwards: :9080 -> 10.13.37.2:80
+   ```
+2. In VS Code press `F1` → **"Enable Wokwi IoT Private Gateway"** → Accept
+3. Start the simulator
+4. Open `http://localhost:9080` in Chrome, Firefox, or Edge (not Safari)
+
 ---
 
 ## Option B: Physical ESP32
@@ -149,6 +169,29 @@ pio device monitor
 ```
 
 **Done! Continue to the [Commands](#commands) section.**
+
+### Web Dashboard on Physical ESP32
+
+Once the firmware is uploaded and the ESP32 connects to your WiFi, the dashboard starts automatically. The IP address is printed on the Serial Monitor:
+
+```
+✓ WiFi connected!
+IP: 192.168.1.42
+[WebServer] Dashboard: http://192.168.1.42
+```
+
+Open that URL in any browser on the same network. The dashboard gives you full access to all commands through a responsive UI — no serial monitor needed.
+
+#### Dashboard features
+
+| Section | Actions |
+|---------|---------|
+| **Wallet** | New, Import, Load, Show, Save, Delete |
+| **Network** | Test connection, Fund (Friendbot), Balance, Account info |
+| **Payments** | Send XLM, Last TX status, Payment history |
+| **System** | Crypto tests, Memory stats |
+
+> 💾 **Note:** Wallets saved to flash persist across power cycles. You only need to run `wallet save` once and `wallet load` on each boot.
 
 ---
 
@@ -213,7 +256,7 @@ Payment successful!
 ```
 stellar-iot-sdk/
 ├── src/
-│   ├── main.cpp                - Main program with CLI
+│   ├── main.cpp                - Entry point, CLI handler, WebServer init
 │   ├── stellar_utils.*         - Base utilities
 │   ├── stellar_crypto.*        - Ed25519, SHA-256, AES-256
 │   ├── stellar_keypair.*       - Key management
@@ -221,7 +264,8 @@ stellar-iot-sdk/
 │   ├── stellar_network.*       - Horizon API client
 │   ├── stellar_xdr.*           - XDR serialization
 │   ├── stellar_account.*       - Account management
-│   └── stellar_payment.*       - Payment operations
+│   ├── stellar_payment.*       - Payment operations
+│   └── stellar_webserver.*     - HTTP dashboard (REST API + embedded UI)
 ├── platformio.ini              - PlatformIO configuration
 └── README.md
 ```
